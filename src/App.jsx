@@ -1,21 +1,59 @@
-import styled from "styled-components";
 import { MantineProvider } from "@mantine/core";
+import { Routes, Route } from "react-router-dom";
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 1rem 0;
-`;
+// Components
+import Home from "./components/Home";
+import Bookmarks from "./components/Bookmarks";
+import Footer from "./components/Footer";
+
+// Styles
+import {
+  Wrapper,
+  Navbar,
+  NavHead,
+  NavItem,
+  ImageBox,
+  ContentWrapper,
+  NavItemsBox,
+} from "./styles/App.styles";
+
+// Assets
+import logo from "./assets/instagram.svg";
 
 function App() {
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
-      <Container>
-        <h1>Snappy</h1>
-        <h2>Connect with the world!</h2>
-      </Container>
+      <Wrapper>
+        <Navbar>
+          <ul>
+            <div>
+              <li>
+                <NavHead to="/">
+                  <ImageBox>
+                    <img src={logo} alt="logo" />
+                  </ImageBox>
+                  <h1>Snappy</h1>
+                </NavHead>
+              </li>
+            </div>
+            <NavItemsBox>
+              <li>
+                <NavItem to="/">Explore</NavItem>
+              </li>
+              <li>
+                <NavItem to="/bookmarks">Bookmarks</NavItem>
+              </li>
+            </NavItemsBox>
+          </ul>
+        </Navbar>
+        <ContentWrapper>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/bookmarks" element={<Bookmarks />} />
+          </Routes>
+        </ContentWrapper>
+        <Footer />
+      </Wrapper>
     </MantineProvider>
   );
 }
