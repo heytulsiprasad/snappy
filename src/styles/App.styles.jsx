@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
 export const Navbar = styled.nav`
   display: flex;
   background: #eee;
-  padding: 2rem 2rem;
+  padding: 1rem 2rem;
 
   ul {
     width: 100%;
@@ -32,7 +32,7 @@ export const NavItem = styled(Link)`
   text-decoration: none;
   color: #000;
   font-weight: 500;
-  font-size: 1.4rem;
+  font-size: 1rem;
 `;
 
 export const NavItemsBox = styled.div`

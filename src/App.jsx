@@ -1,10 +1,13 @@
 import { MantineProvider } from "@mantine/core";
 import { Routes, Route } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 // Components
 import Home from "./components/Home";
 import Bookmarks from "./components/Bookmarks";
 import Footer from "./components/Footer";
+import ProfileTag from "./components/ProfileTag";
+import Login from "./components/Login";
 
 // Styles
 import {
@@ -21,6 +24,11 @@ import {
 import logo from "./assets/instagram.svg";
 
 function App() {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const currentUser = useSelector((state) => state.auth.currentUser);
+
+  console.log({ isAuthenticated, currentUser });
+
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
       <Wrapper>
@@ -32,7 +40,7 @@ function App() {
                   <ImageBox>
                     <img src={logo} alt="logo" />
                   </ImageBox>
-                  <h1>Snappy</h1>
+                  <h2>Snappy</h2>
                 </NavHead>
               </li>
             </div>
@@ -43,6 +51,16 @@ function App() {
               <li>
                 <NavItem to="/bookmarks">Bookmarks</NavItem>
               </li>
+              <li>
+                {!isAuthenticated ? (
+                  <NavItem to="/auth">Login</NavItem>
+                ) : (
+                  <ProfileTag
+                    profileImg={currentUser.profileImg}
+                    profileName={currentUser.profileName}
+                  />
+                )}
+              </li>
             </NavItemsBox>
           </ul>
         </Navbar>
@@ -50,6 +68,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/bookmarks" element={<Bookmarks />} />
+            <Route path="/auth" element={<Login />} />
           </Routes>
         </ContentWrapper>
         <Footer />
