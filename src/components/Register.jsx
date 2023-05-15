@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Input, Button, Loader, Text } from "@mantine/core";
+import { Input, Button, Loader, Text, Title, Box } from "@mantine/core";
 import { MdAlternateEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import axios from "axios";
@@ -63,80 +63,93 @@ const Register = () => {
   };
 
   return (
-    <div>
-      <form
-        noValidate
-        onSubmit={onSubmitHandler}
-        style={{
+    <Box sx={{ padding: "1rem 2rem" }}>
+      <Title order={1}>Register</Title>
+      <Box
+        sx={{
+          padding: "2rem 0",
           display: "flex",
           flexDirection: "column",
+          alignItems: "start",
           justifyContent: "center",
         }}
       >
-        <Input.Wrapper
-          id="input-name"
-          withAsterisk
-          label="Your Name"
-          sx={{ marginBottom: "1rem" }}
-        >
-          <Input
-            id="input-name"
-            icon={<CgProfile />}
-            type="text"
-            name="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            sx={{ minWidth: "20rem" }}
-          />
-        </Input.Wrapper>
-
-        <Input.Wrapper
-          id="input-email"
-          withAsterisk
-          label="Your Email"
-          sx={{ marginBottom: "1rem" }}
-        >
-          <Input
-            id="input-email"
-            icon={<MdAlternateEmail />}
-            type="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            sx={{ minWidth: "20rem" }}
-          />
-        </Input.Wrapper>
-
-        <Input.Wrapper id="input-password" withAsterisk label="Your Password">
-          <Input
-            icon={<RiLockPasswordLine />}
-            type="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            sx={{ minWidth: "20rem" }}
-          />
-        </Input.Wrapper>
-
-        <Button
-          sx={{
-            width: "40%",
-            textAlign: "center",
-            margin: "2rem auto",
+        <form
+          noValidate
+          onSubmit={onSubmitHandler}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
           }}
-          type="submit"
-          onClick={onSubmitHandler}
         >
-          {loading ? <Loader color="#fff" size="sm" /> : "Register"}
-        </Button>
-      </form>
-      <Text sx={{ textAlign: "center", fontSize: "0.9rem" }}>
-        Already have an account?{" "}
-        <Link style={{ textDecoration: "underline" }} to="/login">
-          Login
-        </Link>
-      </Text>
-    </div>
+          <Input.Wrapper
+            id="input-name"
+            withAsterisk
+            label="Your Name"
+            sx={{ marginBottom: "1rem" }}
+          >
+            <Input
+              id="input-name"
+              icon={<CgProfile />}
+              type="text"
+              name="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              sx={{ minWidth: "20rem" }}
+            />
+          </Input.Wrapper>
+
+          <Input.Wrapper
+            id="input-email"
+            withAsterisk
+            label="Your Email"
+            sx={{ marginBottom: "1rem" }}
+          >
+            <Input
+              id="input-email"
+              icon={<MdAlternateEmail />}
+              type="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              sx={{ minWidth: "20rem" }}
+              required
+            />
+          </Input.Wrapper>
+
+          <Input.Wrapper id="input-password" withAsterisk label="Your Password">
+            <Input
+              icon={<RiLockPasswordLine />}
+              type="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              sx={{ minWidth: "20rem" }}
+              required
+            />
+          </Input.Wrapper>
+
+          <Button
+            sx={{
+              width: "40%",
+              textAlign: "center",
+              margin: "2rem 0",
+            }}
+            type="submit"
+            onClick={onSubmitHandler}
+          >
+            {loading ? <Loader color="#fff" size="sm" /> : "Register"}
+          </Button>
+        </form>
+        <Text sx={{ textAlign: "center", fontSize: "0.9rem" }}>
+          Already have an account?{" "}
+          <Link style={{ textDecoration: "underline" }} to="/login">
+            Login
+          </Link>
+        </Text>
+      </Box>
+    </Box>
   );
 };
 

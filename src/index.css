@@ -12,7 +12,7 @@ html {
 
 body {
   margin: auto;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat", sans-serif !important;
   font-size: 1.6rem;
   line-height: 1.6;
   background-color: #f5f5f5;

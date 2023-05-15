@@ -1,4 +1,4 @@
-import { MantineProvider } from "@mantine/core";
+import { MantineProvider, Text } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +14,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
+import Profile from "./components/Profile";
 
 // Styles
 import {
@@ -62,7 +63,12 @@ function App() {
   }, [isAuthenticated, dispatch]);
 
   return (
-    <MantineProvider withGlobalStyles withNormalizeCSS>
+    <MantineProvider
+      withGlobalStyles
+      theme={{
+        fontFamily: "Montserrat, sans-serif",
+      }}
+    >
       <Notifications />
       <Wrapper>
         <Navbar>
@@ -73,7 +79,9 @@ function App() {
                   <ImageBox>
                     <img src={logo} alt="logo" />
                   </ImageBox>
-                  <h2>Snappy</h2>
+                  <Text fz="xl" fw="600" ml="xs">
+                    Snappy
+                  </Text>
                 </NavHead>
               </li>
             </div>
@@ -113,6 +121,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Bookmarks />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
                 </ProtectedRoute>
               }
             />
