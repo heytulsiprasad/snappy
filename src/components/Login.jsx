@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { login } from "../features/auth/authSlice";
+import { notifications } from "@mantine/notifications";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -34,8 +35,6 @@ const Login = () => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
 
-    console.log("submit");
-
     setLoading(true);
     const config = {
       headers: { "Content-Type": "application/json" },
@@ -45,10 +44,22 @@ const Login = () => {
     try {
       const res = await axios.post("/api/auth/login", body, config);
       localStorage.setItem("token", res.data.token);
-      await getUserInfo();
-      setLoading(false);
+
+      if (res.data.token) {
+        await getUserInfo();
+      } else {
+        console.log("no token");
+      }
     } catch (err) {
+      notifications.show({
+        title: "Error",
+        message: err.response.data.msg,
+        color: "red",
+      });
+
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 

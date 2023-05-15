@@ -6,6 +6,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
+import { notifications } from "@mantine/notifications";
 
 import { login } from "../features/auth/authSlice";
 
@@ -48,9 +49,16 @@ const Register = () => {
       const res = await axios.post("/api/auth/signup", body, config);
       localStorage.setItem("token", res.data.token);
       await getUserInfo();
-      setLoading(false);
     } catch (err) {
+      notifications.show({
+        title: "Error",
+        message: err.response.data.msg,
+        color: "red",
+      });
+
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
