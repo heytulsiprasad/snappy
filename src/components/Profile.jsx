@@ -4,10 +4,10 @@ import {
   Text,
   Stack,
   Image,
-  Input,
   Flex,
   TextInput,
   Button,
+  Input,
 } from "@mantine/core";
 import profileImg from "./../assets/background.jpg";
 import { useForm } from "@mantine/form";
@@ -43,7 +43,27 @@ const Profile = () => {
     <Box sx={{ padding: "1rem 2rem" }}>
       <Flex direction="column" justify="center" align="center" p={4}>
         <Box maw={300} my={12}>
-          <Image src={profileImg} radius="md" withPlaceholder />
+          <Image
+            src={profileImg}
+            radius="md"
+            withPlaceholder
+            caption={
+              <Input.Wrapper id="update-pic" label="Edit Profile">
+                <Input
+                  id="update-pic"
+                  type="file"
+                  accept=".png, .jpg, .jpeg"
+                  sx={{
+                    display: "none",
+                    "&:hover": {
+                      textDecoration: "underline",
+                      cursor: "pointer",
+                    },
+                  }}
+                />
+              </Input.Wrapper>
+            }
+          />
         </Box>
         <Stack align="center" spacing="xs">
           <Title order={3}>Alex Young</Title>
