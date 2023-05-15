@@ -8,6 +8,7 @@ import Bookmarks from "./components/Bookmarks";
 import Footer from "./components/Footer";
 import ProfileTag from "./components/ProfileTag";
 import Login from "./components/Login";
+import Register from "./components/Register";
 
 // Styles
 import {
@@ -56,8 +57,9 @@ function App() {
                   <NavItem to="/auth">Login</NavItem>
                 ) : (
                   <ProfileTag
+                    name={currentUser.name}
+                    email={currentUser.email}
                     profileImg={currentUser.profileImg}
-                    profileName={currentUser.profileName}
                   />
                 )}
               </li>
@@ -68,7 +70,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/bookmarks" element={<Bookmarks />} />
-            <Route path="/auth" element={<Login />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </ContentWrapper>
         <Footer />

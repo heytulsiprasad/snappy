@@ -5,10 +5,12 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { CgProfile } from "react-icons/cg";
 
 import { login } from "../features/auth/authSlice";
 
-const Login = () => {
+const Register = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -40,10 +42,10 @@ const Login = () => {
     const config = {
       headers: { "Content-Type": "application/json" },
     };
-    const body = JSON.stringify({ email, password });
+    const body = JSON.stringify({ name, email, password });
 
     try {
-      const res = await axios.post("/api/auth/login", body, config);
+      const res = await axios.post("/api/auth/signup", body, config);
       localStorage.setItem("token", res.data.token);
       await getUserInfo();
       setLoading(false);
@@ -63,6 +65,23 @@ const Login = () => {
           justifyContent: "center",
         }}
       >
+        <Input.Wrapper
+          id="input-name"
+          withAsterisk
+          label="Your Name"
+          sx={{ marginBottom: "1rem" }}
+        >
+          <Input
+            id="input-name"
+            icon={<CgProfile />}
+            type="text"
+            name="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            sx={{ minWidth: "20rem" }}
+          />
+        </Input.Wrapper>
+
         <Input.Wrapper
           id="input-email"
           withAsterisk
@@ -100,17 +119,17 @@ const Login = () => {
           type="submit"
           onClick={onSubmitHandler}
         >
-          {loading ? <Loader color="#fff" size="sm" /> : "Login"}
+          {loading ? <Loader color="#fff" size="sm" /> : "Register"}
         </Button>
       </form>
       <Text sx={{ textAlign: "center", fontSize: "0.9rem" }}>
-        Dont have an account?{" "}
-        <Link style={{ textDecoration: "underline" }} to="/register">
-          Register
+        Already have an account?{" "}
+        <Link style={{ textDecoration: "underline" }} to="/login">
+          Login
         </Link>
       </Text>
     </div>
   );
 };
 
-export default Login;
+export default Register;

@@ -11,12 +11,10 @@ const jwt = require("jsonwebtoken");
  */
 
 router.post("/signup", async (req, res) => {
-  const { email, password } = req.body;
+  const { name, email, password } = req.body;
   let user;
 
-  console.log({ email, password });
-
-  // return res.send("Hey");
+  console.log({ name, email, password });
 
   try {
     // check if user already exists
@@ -26,7 +24,7 @@ router.post("/signup", async (req, res) => {
     }
 
     // create new user
-    user = new User({ email, password });
+    user = new User({ name, email, password });
 
     // hash user password
     const salt = await bcrypt.genSalt(10);
