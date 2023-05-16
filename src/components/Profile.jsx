@@ -30,7 +30,8 @@ import {
   setProfile,
   setProfileImage,
 } from "../features/auth/authSlice";
-import { getUserInfo, getImageURL } from "../utils/helpers";
+import { getUserInfo, imageUpload } from "../utils/helpers";
+import { notifications } from "@mantine/notifications";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -71,6 +72,7 @@ const Profile = () => {
       instagramlink,
       dateOfBirth: new Date(dateOfBirth),
       gender,
+      image,
     },
   });
 
@@ -100,26 +102,19 @@ const Profile = () => {
   };
 
   const updateImageHandler = async (event) => {
-    console.log("uploading image");
+    const imageFile = event.target.files[0];
 
-    // Update values in API
-    try {
-      const token = localStorage.getItem("token");
-      const config = {
-        headers: { "Content-Type": "multipart/form-data" },
-      };
-      const formData = new FormData();
-
-      formData.append("profilePic", event.target.files[0]);
-
-      axios.defaults.headers.common["x-auth-token"] = token;
-      const res = await axios.post("/api/profile/edit/image", formData, config);
-
-      // Update image in redux
-      dispatch(setProfileImage({ image: getImageURL(res.data.profile.image) }));
-    } catch (err) {
-      console.error(err);
+    if (!imageFile.name.match(/\.(jpg|jpeg|png|gif)$/)) {
+      notifications.show({
+        title: "Invalid file type",
+        message: "Please upload an image file",
+      });
     }
+
+    imageUpload(imageFile, async (url) => {
+      dispatch(setProfileImage({ image: url }));
+      form.setFieldValue("image", url);
+    });
   };
 
   return (

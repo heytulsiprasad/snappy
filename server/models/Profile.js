@@ -18,10 +18,7 @@ const ProfileSchema = new mongoose.Schema({
     type: String,
     enum: ["male", "female", "other"],
   },
-  image: {
-    data: Buffer,
-    contentType: String,
-  },
+  image: String,
   friends: [
     {
       type: mongoose.Schema.Types.ObjectId,
