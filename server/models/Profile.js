@@ -22,6 +22,18 @@ const ProfileSchema = new mongoose.Schema({
     data: Buffer,
     contentType: String,
   },
+  friends: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+    },
+  ],
+  friendRequests: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+    },
+  ],
 });
 
 const Profile = mongoose.model("profile", ProfileSchema);
