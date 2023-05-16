@@ -1,13 +1,17 @@
 import { Avatar, Box, Text } from "@mantine/core";
 import PropTypes from "prop-types";
 import nameInitials from "name-initials";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { logout } from "../features/auth/authSlice";
+import useOnClickOutside from "../hooks/useOutsideClick";
 
 const ProfileTag = ({ name, email, profileImg }) => {
+  // Create a ref that we add to the element for which we want to detect outside clicks
+  const boxRef = useRef();
+
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,8 +27,11 @@ const ProfileTag = ({ name, email, profileImg }) => {
     navigate("/login");
   };
 
+  // Call hook passing in the ref and a function to call on outside click
+  useOnClickOutside(boxRef, () => setOpen(false));
+
   return (
-    <Box sx={{ position: "relative" }}>
+    <Box sx={{ position: "relative" }} ref={boxRef}>
       <Box
         sx={{
           display: "flex",
@@ -60,7 +67,7 @@ const ProfileTag = ({ name, email, profileImg }) => {
           }}
         >
           <Option onClick={onLogout}>Logout</Option>
-          <Option onClick={() => navigate("/profile")}>Profile</Option>
+          <Option onClick={() => navigate("/profile/edit")}>Profile</Option>
         </Box>
       )}
     </Box>

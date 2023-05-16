@@ -9,11 +9,10 @@ const app = express();
 const mongoose = require("mongoose");
 const helmet = require("helmet");
 const cors = require("cors");
+// const multer = require("multer");
 
 // Middleware
-
-// Helmet helps secure Express apps by setting HTTP response headers.
-app.use(helmet());
+app.use(helmet()); // helmet helps secure Express apps by setting HTTP response headers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
@@ -27,6 +26,20 @@ if (process.env.NODE_ENV !== "production") {
 // Routes
 const authRoutes = require("./routers/auth");
 const userRoutes = require("./routers/user");
+const profileRoutes = require("./routers/profile");
+
+// // Storage
+// const Storage = multer.diskStorage({
+//   destination: "uploads",
+//   filename: (req, file, cb) => {
+//     // cb(err, filename)
+//     cb(null, `${Date.now()}-${file.originalname}`);
+//   },
+// });
+
+// const upload = multer({
+//   storage: Storage,
+// }).single("testImage");
 
 // Connect to database
 const db =
@@ -53,9 +66,12 @@ app.get("/", (req, res) => {
 // Routes middleware
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/profile", profileRoutes);
 
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
+
+// module.exports = { upload };

@@ -30,35 +30,20 @@ import {
 // Assets
 import logo from "./assets/instagram.svg";
 
-// Reducers
+// Utils & Reducers
 import { login } from "./features/auth/authSlice";
+import { getUserInfo } from "./utils/helpers";
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const currentUser = useSelector((state) => state.auth.currentUser);
   const dispatch = useDispatch();
 
-  console.log({ isAuthenticated, currentUser });
-
   useEffect(() => {
-    const getUserInfo = async () => {
-      const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-      if (token) {
-        try {
-          axios.defaults.headers.common["x-auth-token"] = token;
-          const res = await axios.get("/api/user/info");
-          dispatch(login({ currentUser: res.data.user }));
-        } catch (e) {
-          console.error(e);
-        }
-      } else {
-        delete axios.defaults.headers.common["x-auth-token"];
-      }
-    };
-
-    if (!isAuthenticated) {
-      getUserInfo();
+    if (token) {
+      getUserInfo(dispatch, login);
     }
   }, [isAuthenticated, dispatch]);
 
@@ -99,7 +84,7 @@ function App() {
                   <ProfileTag
                     name={currentUser.name}
                     email={currentUser.email}
-                    profileImg={currentUser.profileImg}
+                    profileImg={currentUser?.profile?.image}
                   />
                 )}
               </li>
@@ -125,7 +110,7 @@ function App() {
               }
             />
             <Route
-              path="/profile"
+              path="/profile/edit"
               element={
                 <ProtectedRoute>
                   <Profile />

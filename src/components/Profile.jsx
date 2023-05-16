@@ -8,9 +8,15 @@ import {
   TextInput,
   Button,
   Input,
+  Radio,
+  Group,
+  Loader,
 } from "@mantine/core";
-import profileImg from "./../assets/background.jpg";
+import axios from "axios";
+import { DateInput } from "@mantine/dates";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "@mantine/form";
+import fakeBg from "./../assets/background.jpg";
 import {
   AiFillGithub,
   AiFillFacebook,
@@ -18,25 +24,102 @@ import {
   AiFillLinkedin,
   AiFillInstagram,
 } from "react-icons/ai";
+import { useEffect, useState } from "react";
+import {
+  setCurrentUser,
+  setProfile,
+  setProfileImage,
+} from "../features/auth/authSlice";
+import { getUserInfo, getImageURL } from "../utils/helpers";
 
 const Profile = () => {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+
+  // Fetch latest profile
+  useEffect(() => {
+    getUserInfo(dispatch, setCurrentUser);
+  }, [dispatch]);
+
+  const currentUser = useSelector((state) => state.auth.currentUser);
+
+  const { name, email, profile } = currentUser;
+  const {
+    bio,
+    company,
+    location,
+    twitterlink,
+    githublink,
+    facebooklink,
+    linkedinlink,
+    instagramlink,
+    dateOfBirth,
+    gender,
+    image,
+  } = profile;
+
   const form = useForm({
     initialValues: {
-      name: "",
-      bio: "",
-      company: "",
-      location: "",
-      twitterlink: "",
-      githublink: "",
-      facebooklink: "",
-      linkedinlink: "",
-      instagramlink: "",
+      name,
+      bio,
+      company,
+      location,
+      twitterlink,
+      githublink,
+      facebooklink,
+      linkedinlink,
+      instagramlink,
+      dateOfBirth: new Date(dateOfBirth),
+      gender,
     },
   });
 
-  const formSubmitHandler = (values) => {
+  const formSubmitHandler = async (values) => {
     // Sync with API
     console.log(values);
+
+    setLoading(true);
+    // Update values in API
+    try {
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: { "Content-Type": "application/json" },
+      };
+      const body = JSON.stringify({ ...values });
+
+      axios.defaults.headers.common["x-auth-token"] = token;
+      const res = await axios.post("/api/profile/edit", body, config);
+      console.log(res.data);
+
+      setProfile(res.data.profile);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateImageHandler = async (event) => {
+    console.log("uploading image");
+
+    // Update values in API
+    try {
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: { "Content-Type": "multipart/form-data" },
+      };
+      const formData = new FormData();
+
+      formData.append("profilePic", event.target.files[0]);
+
+      axios.defaults.headers.common["x-auth-token"] = token;
+      const res = await axios.post("/api/profile/edit/image", formData, config);
+
+      // Update image in redux
+      dispatch(setProfileImage({ image: getImageURL(res.data.profile.image) }));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -44,7 +127,7 @@ const Profile = () => {
       <Flex direction="column" justify="center" align="center" p={4}>
         <Box maw={300} my={12}>
           <Image
-            src={profileImg}
+            src={image ? image : fakeBg}
             radius="md"
             withPlaceholder
             caption={
@@ -53,6 +136,7 @@ const Profile = () => {
                   id="update-pic"
                   type="file"
                   accept=".png, .jpg, .jpeg"
+                  onChange={updateImageHandler}
                   sx={{
                     display: "none",
                     "&:hover": {
@@ -66,74 +150,97 @@ const Profile = () => {
           />
         </Box>
         <Stack align="center" spacing="xs">
-          <Title order={3}>Alex Young</Title>
+          <Title order={3}>{name}</Title>
           <Text size="sm" color="gray">
-            Software Developer
+            {bio}
           </Text>
         </Stack>
       </Flex>
       <form onSubmit={form.onSubmit((values) => formSubmitHandler(values))}>
-        <Stack>
-          <TextInput
-            label="Name"
-            placeholder="Your name"
-            {...form.getInputProps("name")}
-          />
-          <TextInput
-            label="Bio"
-            placeholder="Bio"
-            {...form.getInputProps("bio")}
-          />
-          <TextInput
-            label="Company"
-            placeholder="Which company do you work for?"
-            {...form.getInputProps("company")}
-          />
-          <TextInput
-            label="Location"
-            placeholder="Where are you based?"
-            {...form.getInputProps("location")}
-          />
-        </Stack>
-        <Stack>
-          <Title order={2} mt="2rem">
-            Social media handles
-          </Title>
+        <Group spacing="xl" grow align="start" mt="xl">
+          <Stack>
+            <Title order={2}>Personal Information</Title>
 
-          <TextInput
-            label="Github Username"
-            placeholder="Github Username"
-            icon={<AiFillGithub />}
-            {...form.getInputProps("githublink")}
-          />
-          <TextInput
-            label="Twitter Handle"
-            placeholder="Twitter Username"
-            icon={<AiFillTwitterCircle />}
-            {...form.getInputProps("twitterlink")}
-          />
-          <TextInput
-            label="Facebook Username"
-            placeholder="Facebook Username"
-            icon={<AiFillFacebook />}
-            {...form.getInputProps("facebooklink")}
-          />
-          <TextInput
-            label="LinkedIn Username"
-            placeholder="LinkedIn Username"
-            icon={<AiFillLinkedin />}
-            {...form.getInputProps("linkedinlink")}
-          />
-          <TextInput
-            label="Instagram handle"
-            placeholder="Instagram handle"
-            icon={<AiFillInstagram />}
-            {...form.getInputProps("instagramlink")}
-          />
-        </Stack>
+            <TextInput
+              label="Name"
+              placeholder="Your name"
+              {...form.getInputProps("name")}
+            />
+            <TextInput
+              label="Email"
+              placeholder="Email address"
+              value={email}
+              disabled
+            />
+            <TextInput
+              label="Bio"
+              placeholder="Bio"
+              {...form.getInputProps("bio")}
+            />
+            <TextInput
+              label="Company"
+              placeholder="Which company do you work for?"
+              {...form.getInputProps("company")}
+            />
+            <TextInput
+              label="Location"
+              placeholder="Where are you based?"
+              {...form.getInputProps("location")}
+            />
+            <Radio.Group
+              label="Choose your gender"
+              {...form.getInputProps("gender")}
+            >
+              <Group mt="xs">
+                <Radio value="male" label="Male" />
+                <Radio value="female" label="Female" />
+                <Radio value="others" label="Others" />
+              </Group>
+            </Radio.Group>
+            <DateInput
+              valueFormat="DD MMM YYYY"
+              label="Date of Birth"
+              placeholder="Enter your Date of Birth"
+              {...form.getInputProps("dateOfBirth")}
+            />
+          </Stack>
+          <Stack>
+            <Title order={2}>Social media handles</Title>
 
+            <TextInput
+              label="Github Username"
+              placeholder="Github Username"
+              icon={<AiFillGithub />}
+              {...form.getInputProps("githublink")}
+            />
+            <TextInput
+              label="Twitter Handle"
+              placeholder="Twitter Username"
+              icon={<AiFillTwitterCircle />}
+              {...form.getInputProps("twitterlink")}
+            />
+            <TextInput
+              label="Facebook Username"
+              placeholder="Facebook Username"
+              icon={<AiFillFacebook />}
+              {...form.getInputProps("facebooklink")}
+            />
+            <TextInput
+              label="LinkedIn Username"
+              placeholder="LinkedIn Username"
+              icon={<AiFillLinkedin />}
+              {...form.getInputProps("linkedinlink")}
+            />
+            <TextInput
+              label="Instagram handle"
+              placeholder="Instagram handle"
+              icon={<AiFillInstagram />}
+              {...form.getInputProps("instagramlink")}
+            />
+          </Stack>
+        </Group>
         <Button mt="2rem" type="submit" disabled={!form.isDirty()}>
-          Submit
+          {loading ? <Loader color="#fff" size="sm" /> : "Save"}
         </Button>
       </form>
     </Box>
