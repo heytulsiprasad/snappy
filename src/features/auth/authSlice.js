@@ -30,10 +30,30 @@ export const authSlice = createSlice({
         ...action.payload.profile,
       };
     },
+    acceptFriendRequest: (state, action) => {
+      state.currentUser.profile.friends.push(action.payload.friend);
+      state.currentUser.profile.friendRequests =
+        state.currentUser.profile.friendRequests.filter(
+          (friend) => friend != action.payload.friend
+        );
+    },
+    declineFriendRequest: (state, action) => {
+      state.currentUser.profile.friendRequests =
+        state.currentUser.profile.friendRequests.filter(
+          (friend) => friend != action.payload.friend
+        );
+    },
   },
 });
 
-export const { login, logout, setCurrentUser, setProfileImage, setProfile } =
-  authSlice.actions;
+export const {
+  login,
+  logout,
+  setCurrentUser,
+  setProfileImage,
+  setProfile,
+  acceptFriendRequest,
+  declineFriendRequest,
+} = authSlice.actions;
 
 export default authSlice.reducer;

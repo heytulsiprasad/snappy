@@ -84,4 +84,32 @@ router.put("/update-profile-pic", isAuthenticated, async (req, res) => {
   }
 });
 
+/**
+ * @desc  Update user name
+ * @route PUT api/user/update-name
+ * @access Private
+ */
+
+router.put("/update-name", isAuthenticated, async (req, res) => {
+  try {
+    console.log(req.body.name);
+    const user = await User.findOneAndUpdate(
+      { _id: req.user.id },
+      { $set: { name: req.body.name } },
+      { new: true }
+    );
+
+    const profile = await Profile.findOne({ user: req.user.id });
+    const userData = {
+      ...user.toObject(),
+      profile,
+    };
+
+    return res.status(200).json({ user: userData });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json(error);
+  }
+});
+
 module.exports = router;

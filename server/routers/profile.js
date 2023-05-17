@@ -7,6 +7,7 @@ const { isAuthenticated } = require("../middleware/auth");
 // const { upload } = require("../server");
 const fs = require("fs");
 const path = require("path");
+const User = require("../models/User");
 
 function removeEmpty(obj) {
   return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v != null));
@@ -160,17 +161,38 @@ router.get("/search", isAuthenticated, async (req, res) => {
  * @access Private
  */
 
-router.put("/friend-request/:userId", isAuthenticated, async (req, res) => {
-  const { userId } = req.params;
+router.put("/friend-request/:receiverId", isAuthenticated, async (req, res) => {
+  const { receiverId } = req.params;
 
   try {
-    const profile = await Profile.findOneAndUpdate(
-      { user: userId },
-      { $push: { friendRequests: req.user.id } },
-      { new: true }
+    // Add friend request to receiver's profile if not already exists
+
+    const receiverProfile = await Profile.find({
+      user: receiverId,
+    });
+
+    const doesFriendExists = receiverProfile[0].friendRequests.includes(
+      req.user.id
     );
 
-    return res.status(200).json({ profile });
+    if (!doesFriendExists) {
+      const profile = await Profile.findOneAndUpdate(
+        { user: receiverId },
+        { $push: { friendRequests: req.user.id } },
+        { new: true }
+      );
+
+      const user = await User.findById(receiverId).select("-password");
+
+      const userData = {
+        ...user.toObject(),
+        profile,
+      };
+
+      return res.status(200).json({ user: userData });
+    } else {
+      return res.status(400).json({ msg: "Friend request already sent" });
+    }
   } catch (err) {
     console.error(err);
     return res.status(500).json({ msg: "Server Error" });

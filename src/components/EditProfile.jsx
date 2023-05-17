@@ -32,10 +32,13 @@ import {
 } from "../features/auth/authSlice";
 import { getUserInfo, imageUpload } from "../utils/helpers";
 import { notifications } from "@mantine/notifications";
+import { BiLinkExternal } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 const EditProfile = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   // Fetch latest profile
   useEffect(() => {
@@ -44,18 +47,18 @@ const EditProfile = () => {
 
   const currentUser = useSelector((state) => state.auth.currentUser);
 
-  const { name, email, profile, image } = currentUser;
+  const { name, email, profile = {}, image = "" } = currentUser;
   const {
-    bio,
-    company,
-    location,
-    twitterlink,
-    githublink,
-    facebooklink,
-    linkedinlink,
-    instagramlink,
-    dateOfBirth,
-    gender,
+    bio = "",
+    company = "",
+    location = "",
+    twitterlink = "",
+    githublink = "",
+    facebooklink = "",
+    linkedinlink = "",
+    instagramlink = "",
+    dateOfBirth = "",
+    gender = "",
   } = profile;
 
   const form = useForm({
@@ -69,7 +72,7 @@ const EditProfile = () => {
       facebooklink,
       linkedinlink,
       instagramlink,
-      dateOfBirth: new Date(dateOfBirth),
+      dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : "",
       gender,
     },
   });
@@ -77,21 +80,19 @@ const EditProfile = () => {
   const formSubmitHandler = async (values) => {
     // Sync with API
     console.log(values);
-
     setLoading(true);
+
     // Update values in API
     try {
-      const token = localStorage.getItem("token");
-      const config = {
-        headers: { "Content-Type": "application/json" },
-      };
-      const body = JSON.stringify({ ...values });
-
-      axios.defaults.headers.common["x-auth-token"] = token;
-      const res = await axios.post("/api/profile/edit", body, config);
+      const res = await axios.post(
+        "/api/profile/edit",
+        JSON.stringify({ ...values }),
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
       console.log(res.data);
-
-      setProfile(res.data.profile);
+      dispatch(setProfile(res.data.profile));
 
       // Notify user upon update success
       notifications.show({
@@ -164,7 +165,15 @@ const EditProfile = () => {
           />
         </Box>
         <Stack align="center" spacing="xs">
-          <Title order={3}>{name}</Title>
+          <Group sx={{ alignItems: "center" }}>
+            <Title order={3}>{name}</Title>
+            <Box
+              onClick={() => navigate(`/profile/${currentUser._id}`)}
+              sx={{ cursor: "pointer" }}
+            >
+              <BiLinkExternal />
+            </Box>
+          </Group>
           <Text size="sm" color="gray">
             {bio}
           </Text>

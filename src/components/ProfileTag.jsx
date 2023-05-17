@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { logout } from "../features/auth/authSlice";
 import useOnClickOutside from "../hooks/useOutsideClick";
 
-const ProfileTag = ({ name, email, profileImg }) => {
+const ProfileTag = ({ name, email, profileImg, userId }) => {
   // Create a ref that we add to the element for which we want to detect outside clicks
   const boxRef = useRef();
 
@@ -66,7 +66,12 @@ const ProfileTag = ({ name, email, profileImg }) => {
             zIndex: 1,
           }}
         >
-          <Option onClick={() => navigate("/profile/edit")}>Profile</Option>
+          <Option onClick={() => navigate("/profile/friend-requests")}>
+            Friend Requests
+          </Option>
+          <Option onClick={() => navigate(`/profile/${userId}`)}>
+            Profile
+          </Option>
           <Option onClick={onLogout}>Logout</Option>
         </Box>
       )}
@@ -95,6 +100,7 @@ Option.propTypes = {
 };
 
 ProfileTag.propTypes = {
+  userId: PropTypes.string.isRequired,
   profileImg: PropTypes.string,
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,

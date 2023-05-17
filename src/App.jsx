@@ -17,6 +17,7 @@ import Posts from "./components/Posts";
 import Post from "./components/Post";
 import Profile from "./components/Profile";
 import Explore from "./components/Explore";
+import FriendRequests from "./components/FriendRequests";
 
 // Styles
 import {
@@ -107,8 +108,9 @@ function App() {
                   <NavItem to="/login">Login</NavItem>
                 ) : (
                   <ProfileTag
-                    name={currentUser.name}
-                    email={currentUser.email}
+                    name={currentUser?.name}
+                    email={currentUser?.email}
+                    userId={currentUser?._id}
                     profileImg={currentUser?.image}
                   />
                 )}
@@ -139,6 +141,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile/friend-requests"
+              element={
+                <ProtectedRoute>
+                  <FriendRequests />
                 </ProtectedRoute>
               }
             />

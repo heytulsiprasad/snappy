@@ -1,4 +1,13 @@
-import { Box, Title, Image, Group, Stack, Text, Button } from "@mantine/core";
+import {
+  Box,
+  Title,
+  Image,
+  Group,
+  Stack,
+  Text,
+  Button,
+  Badge,
+} from "@mantine/core";
 import axios from "axios";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
@@ -11,6 +20,7 @@ import {
   AiFillLinkedin,
   AiFillInstagram,
 } from "react-icons/ai";
+import { notifications } from "@mantine/notifications";
 
 const Profile = () => {
   const { userId } = useParams();
@@ -33,6 +43,24 @@ const Profile = () => {
 
     fetchUser();
   }, [userId]);
+
+  // Send friend request
+  const sendFriendRequest = async (userId) => {
+    try {
+      const res = await axios.put(`/api/profile/friend-request/${userId}`);
+      console.log(res.data);
+      setUser(res.data.user);
+
+      // Notify user upon success
+      notifications.show({
+        title: "Friend request sent",
+        message: "Your friend request has been sent successfully",
+        color: "cyan",
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   return (
     <Box sx={{ padding: "2rem" }}>
@@ -65,6 +93,17 @@ const Profile = () => {
               {user?.profile?.bio || user.email}
             </Title>
             <Group>
+              <Badge
+                variant="gradient"
+                gradient={{ from: "indigo", to: "cyan" }}
+                pr={3}
+                rightSection={() => <Text>12</Text>}
+              >
+                Friends: {user.profile.friends.length}
+              </Badge>
+            </Group>
+            <Group>
+              {/* If profile is of current user */}
               {user._id === currentUserId && (
                 <Button
                   variant="light"
@@ -75,14 +114,30 @@ const Profile = () => {
                   Edit profile
                 </Button>
               )}
-              {user._id !== currentUserId && (
-                <Button variant="light" color="white" compact>
-                  Send Friend Request
-                </Button>
-              )}
+              {/* If profile is not of current user and friend request not already sent */}
+              {user._id !== currentUserId &&
+                !user.profile.friendRequests.includes(currentUserId) && (
+                  <Button
+                    variant="light"
+                    color="white"
+                    compact
+                    onClick={() => sendFriendRequest(userId)}
+                  >
+                    Send Friend Request
+                  </Button>
+                )}
+              {/* If profile is not of current user and friend request is sent */}
+              {user._id !== currentUserId &&
+                user.profile.friendRequests.includes(currentUserId) && (
+                  <Button variant="light" color="white" compact>
+                    Friend Request Sent
+                  </Button>
+                )}
+
+              {/* If profile is not of current user & If profile is already a friend of current user */}
               {user._id !== currentUserId &&
                 user.profile.friends.includes(currentUserId) && (
-                  <Button variant="light" color="white" compact>
+                  <Button variant="light" color="red" compact>
                     Unfriend
                   </Button>
                 )}

@@ -144,7 +144,10 @@ const Post = () => {
                 <Text color="gray" fz="sm">
                   Created at: {dayjs(post.createdAt).format("DD MMM YYYY")}
                 </Text>
-                <Group>
+                <Group
+                  sx={{ cursor: "pointer" }}
+                  onClick={() => navigate(`/profile/${post.author._id}`)}
+                >
                   <Text color="cyan" fw="600" fs="italic" fz="sm">
                     Posted by: {post.author.name}
                   </Text>
