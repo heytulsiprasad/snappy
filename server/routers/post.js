@@ -68,7 +68,9 @@ router.post("/like/:postId", isAuthenticated, async (req, res) => {
     post.likes.push(req.user.id);
     await post.save();
 
-    return res.status(200).json({ post });
+    const newPost = await post.populate("author");
+
+    return res.status(200).json({ post: newPost });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ msg: "Server Error" });
@@ -91,7 +93,9 @@ router.post("/unlike/:postId", isAuthenticated, async (req, res) => {
       post.likes.splice(index, 1);
       await post.save();
 
-      return res.status(200).json({ post });
+      const newPost = await post.populate("author");
+
+      return res.status(200).json({ post: newPost });
     } else {
       return res.status(400).json({ msg: "Post has not been liked" });
     }
@@ -116,7 +120,9 @@ router.post("/comment/:postId", isAuthenticated, async (req, res) => {
     post.comments.push(newComment);
     await post.save();
 
-    return res.status(200).json({ post });
+    const newPost = await post.populate("author");
+
+    return res.status(200).json({ post: newPost });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ msg: "Server Error" });
@@ -155,7 +161,9 @@ router.post(
       post.comments.splice(index, 1);
       await post.save();
 
-      return res.status(200).json({ post });
+      const newPost = await post.populate("author");
+
+      return res.status(200).json({ post: newPost });
     } catch (err) {
       console.error(err);
       return res.status(500).json({ msg: "Server Error" });

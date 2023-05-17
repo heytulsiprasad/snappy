@@ -2,7 +2,7 @@ import { Box, Group, Stack, Title, Text, Image, Button } from "@mantine/core";
 import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPosts } from "../features/posts/postSlice";
+import { setPosts, updatePost } from "../features/posts/postSlice";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import dayjs from "dayjs";
 
@@ -24,7 +24,25 @@ function Posts() {
     fetchPosts();
   }, [dispatch]);
 
-  const handleLike = async (postId) => {};
+  const handleLike = async (postId) => {
+    try {
+      const res = await axios.post(`/api/posts/like/${postId}`);
+      console.log(res.data);
+      dispatch(updatePost(res.data.post));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleDislike = async (postId) => {
+    try {
+      const res = await axios.post(`/api/posts/unlike/${postId}`);
+      console.log(res.data);
+      dispatch(updatePost(res.data.post));
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   return (
     <Box sx={{ padding: "2rem" }}>
@@ -88,7 +106,11 @@ function Posts() {
                   justifyContent: "center",
                   cursor: "pointer",
                 }}
-                onClick={() => handleLike(post._id)}
+                onClick={
+                  post.likes.includes(currentUserId)
+                    ? () => handleDislike(post._id)
+                    : () => handleLike(post._id)
+                }
               >
                 {post.likes.includes(currentUserId) ? (
                   <AiFillHeart size="20px" color="#feb2b2" />
