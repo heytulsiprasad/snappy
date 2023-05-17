@@ -33,7 +33,7 @@ import {
 import { getUserInfo, imageUpload } from "../utils/helpers";
 import { notifications } from "@mantine/notifications";
 
-const Profile = () => {
+const EditProfile = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
@@ -242,4 +242,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default EditProfile;

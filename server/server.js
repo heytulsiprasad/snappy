@@ -27,6 +27,7 @@ if (process.env.NODE_ENV !== "production") {
 const authRoutes = require("./routers/auth");
 const userRoutes = require("./routers/user");
 const profileRoutes = require("./routers/profile");
+const postRoutes = require("./routers/post");
 
 // // Storage
 // const Storage = multer.diskStorage({
@@ -67,6 +68,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/posts", postRoutes);
 
 const PORT = process.env.PORT || 5000;
 

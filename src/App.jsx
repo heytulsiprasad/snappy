@@ -3,7 +3,6 @@ import { Notifications } from "@mantine/notifications";
 import { Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import axios from "axios";
 
 // Components
 import Home from "./components/Home";
@@ -14,7 +13,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
-import Profile from "./components/Profile";
+import EditProfile from "./components/EditProfile";
 
 // Styles
 import {
@@ -33,6 +32,7 @@ import logo from "./assets/instagram.svg";
 // Utils & Reducers
 import { login } from "./features/auth/authSlice";
 import { getUserInfo } from "./utils/helpers";
+import axios from "axios";
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -46,6 +46,25 @@ function App() {
       getUserInfo(dispatch, login);
     }
   }, [isAuthenticated, dispatch]);
+
+  // Interceptor for all API calls
+  axios.interceptors.request.use(
+    (config) => {
+      const token = localStorage.getItem("token");
+
+      if (token) {
+        // config.headers["x-auth-token"] = token;
+        axios.defaults.headers.common["x-auth-token"] = token;
+      } else {
+        delete axios.defaults.headers.common["x-auth-token"];
+      }
+
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
 
   return (
     <MantineProvider
@@ -113,7 +132,7 @@ function App() {
               path="/profile/edit"
               element={
                 <ProtectedRoute>
-                  <Profile />
+                  <EditProfile />
                 </ProtectedRoute>
               }
             />

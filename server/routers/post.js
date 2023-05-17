@@ -31,12 +31,15 @@ router.get("/", isAuthenticated, async (req, res) => {
 
 router.post("/new", isAuthenticated, async (req, res) => {
   // Destructure the body
-  const { content } = req.body;
+  const { content, image } = req.body;
+
+  console.log(content);
 
   try {
     const newPost = new Post({
       content,
       author: req.user.id,
+      image: image ? image : null,
     });
 
     await newPost.save();
