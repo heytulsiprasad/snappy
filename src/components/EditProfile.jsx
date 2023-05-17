@@ -92,6 +92,13 @@ const EditProfile = () => {
       console.log(res.data);
 
       setProfile(res.data.profile);
+
+      // Notify user upon update success
+      notifications.show({
+        title: "Profile updated",
+        message: "Your profile has been updated successfully",
+        color: "green",
+      });
     } catch (err) {
       console.error(err);
     } finally {

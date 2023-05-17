@@ -40,7 +40,6 @@ router.post("/edit", isAuthenticated, async (req, res) => {
     linkedinlink,
     dateOfBirth,
     gender,
-    image,
   });
 
   try {
@@ -76,6 +75,7 @@ router.post("/edit", isAuthenticated, async (req, res) => {
  * @desc  Update user profile pic
  * @route PUT api/profile/edit/image
  * @access Private
+ * @info ⚠️ Deprecated
  */
 
 // Storage

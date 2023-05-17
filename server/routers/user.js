@@ -33,6 +33,36 @@ router.get("/info", isAuthenticated, async (req, res) => {
 });
 
 /**
+ * @desc  Get any user info
+ * @route GET api/user/:userId
+ * @access Private
+ */
+
+router.get("/:userId", isAuthenticated, async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const user = await User.findById(userId).select("-password");
+
+    // If profile exists then also add profile data
+    const profileData = await Profile.find({ user: userId });
+
+    let userData = user.toObject();
+    if (profileData.length > 0) {
+      userData = {
+        ...userData,
+        profile: profileData[0],
+      };
+    }
+
+    return res.status(200).json({ user: userData });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json(error);
+  }
+});
+
+/**
  * @desc  Update user profile pic
  * @route PUT api/user/update-profile-pic
  * @access Private

@@ -15,6 +15,8 @@ import GuestRoute from "./components/GuestRoute";
 import EditProfile from "./components/EditProfile";
 import Posts from "./components/Posts";
 import Post from "./components/Post";
+import Profile from "./components/Profile";
+import Explore from "./components/Explore";
 
 // Styles
 import {
@@ -98,6 +100,9 @@ function App() {
                 <NavItem to="/">Posts</NavItem>
               </li>
               <li>
+                <NavItem to="/explore">Explore</NavItem>
+              </li>
+              <li>
                 {!isAuthenticated ? (
                   <NavItem to="/login">Login</NavItem>
                 ) : (
@@ -126,6 +131,22 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Post />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile/:userId"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/explore"
+              element={
+                <ProtectedRoute>
+                  <Explore />
                 </ProtectedRoute>
               }
             />
