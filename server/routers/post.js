@@ -202,7 +202,7 @@ router.delete("/:postId", isAuthenticated, async (req, res) => {
     }
 
     // Delete the post
-    await post.remove();
+    await Post.findByIdAndDelete(req.params.postId);
 
     return res.status(200).json({ msg: "Post deleted" });
   } catch (err) {

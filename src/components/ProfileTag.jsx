@@ -66,8 +66,8 @@ const ProfileTag = ({ name, email, profileImg }) => {
             zIndex: 1,
           }}
         >
-          <Option onClick={onLogout}>Logout</Option>
           <Option onClick={() => navigate("/profile/edit")}>Profile</Option>
+          <Option onClick={onLogout}>Logout</Option>
         </Box>
       )}
     </Box>

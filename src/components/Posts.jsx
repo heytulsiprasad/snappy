@@ -2,10 +2,11 @@ import { Box, Group, Stack, Title, Text, Image, Button } from "@mantine/core";
 import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPosts, updatePost } from "../features/posts/postSlice";
+import { removePost, setPosts, updatePost } from "../features/posts/postSlice";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
+import { notifications } from "@mantine/notifications";
 
 function Posts() {
   const dispatch = useDispatch();
@@ -41,6 +42,23 @@ function Posts() {
       const res = await axios.post(`/api/posts/unlike/${postId}`);
       console.log(res.data);
       dispatch(updatePost(res.data.post));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleDeletePost = async (postId) => {
+    try {
+      const res = await axios.delete(`/api/posts/${postId}`);
+      console.log(res.data);
+      dispatch(removePost(postId));
+
+      // Notify user upon delete success
+      notifications.show({
+        title: "Post deleted",
+        message: "Your post has been deleted successfully",
+        color: "red",
+      });
     } catch (e) {
       console.error(e);
     }
@@ -139,7 +157,7 @@ function Posts() {
                   </Text>
                 </Box>
               </Group>
-              <Box>
+              <Stack spacing="xs">
                 <Button
                   variant="light"
                   compact
@@ -147,7 +165,17 @@ function Posts() {
                 >
                   Comments ({post.comments.length})
                 </Button>
-              </Box>
+                {post.author._id === currentUserId && (
+                  <Button
+                    variant="light"
+                    compact
+                    color="red"
+                    onClick={() => handleDeletePost(post._id)}
+                  >
+                    Delete
+                  </Button>
+                )}
+              </Stack>
             </Stack>
           </Group>
         ))}

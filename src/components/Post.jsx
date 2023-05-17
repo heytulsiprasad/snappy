@@ -243,13 +243,15 @@ const Post = () => {
               </Box>
             </Stack>
             <Box>
-              <Button
-                variant="filled"
-                color="red"
-                onClick={() => handleRemoveComment(cmt._id)}
-              >
-                Delete
-              </Button>
+              {cmt.author._id === currentUserId && (
+                <Button
+                  variant="filled"
+                  color="red"
+                  onClick={() => handleRemoveComment(cmt._id)}
+                >
+                  Delete
+                </Button>
+              )}
             </Box>
           </Group>
         ))}
