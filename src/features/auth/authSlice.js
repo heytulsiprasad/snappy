@@ -22,7 +22,7 @@ export const authSlice = createSlice({
       state.currentUser = action.payload.currentUser;
     },
     setProfileImage: (state, action) => {
-      state.currentUser.profile.image = action.payload.image;
+      state.currentUser.image = action.payload.image;
     },
     setProfile: (state, action) => {
       state.currentUser.profile = {

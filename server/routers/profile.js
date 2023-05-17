@@ -27,7 +27,6 @@ router.post("/edit", isAuthenticated, async (req, res) => {
     linkedinlink,
     dateOfBirth,
     gender,
-    image,
   } = req.body;
 
   const sanitizedProfile = removeEmpty({

@@ -28,21 +28,24 @@ function Home() {
       const config = {
         headers: { "Content-Type": "application/json" },
       };
-      const res = await axios.post(
-        "/api/posts/new",
-        JSON.stringify({ content: value, image }),
-        config
-      );
-      console.log(res.data);
 
-      notifications.show({
-        color: "teal",
-        title: "Post created",
-        message: "Your post has been created successfully",
-      });
+      if (value.length > 0) {
+        const res = await axios.post(
+          "/api/posts/new",
+          JSON.stringify({ content: value, image }),
+          config
+        );
+        console.log(res.data);
 
-      setValue("");
-      setImage(null);
+        notifications.show({
+          color: "teal",
+          title: "Post created",
+          message: "Your post has been created successfully",
+        });
+
+        setValue("");
+        setImage(null);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -96,9 +99,9 @@ function Home() {
                     onChange={handleImageUpload}
                     sx={{
                       display: "none",
+                      cursor: "pointer",
                       "&:hover": {
                         textDecoration: "underline",
-                        cursor: "pointer",
                       },
                     }}
                   />

@@ -14,6 +14,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  image: String,
 });
 
 // Remove security fields before sending over API

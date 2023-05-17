@@ -5,8 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
 // Components
-import Home from "./components/Home";
-import Bookmarks from "./components/Bookmarks";
+import New from "./components/New";
 import Footer from "./components/Footer";
 import ProfileTag from "./components/ProfileTag";
 import Login from "./components/Login";
@@ -14,6 +13,7 @@ import Register from "./components/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
 import EditProfile from "./components/EditProfile";
+import Posts from "./components/Posts";
 
 // Styles
 import {
@@ -91,10 +91,10 @@ function App() {
             </div>
             <NavItemsBox>
               <li>
-                <NavItem to="/">Explore</NavItem>
+                <NavItem to="/new">New</NavItem>
               </li>
               <li>
-                <NavItem to="/bookmarks">Bookmarks</NavItem>
+                <NavItem to="/">Posts</NavItem>
               </li>
               <li>
                 {!isAuthenticated ? (
@@ -103,7 +103,7 @@ function App() {
                   <ProfileTag
                     name={currentUser.name}
                     email={currentUser.email}
-                    profileImg={currentUser?.profile?.image}
+                    profileImg={currentUser?.image}
                   />
                 )}
               </li>
@@ -116,15 +116,15 @@ function App() {
               path="/"
               element={
                 <ProtectedRoute>
-                  <Home />
+                  <Posts />
                 </ProtectedRoute>
               }
             />
             <Route
-              path="/bookmarks"
+              path="/new"
               element={
                 <ProtectedRoute>
-                  <Bookmarks />
+                  <New />
                 </ProtectedRoute>
               }
             />

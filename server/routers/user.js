@@ -32,4 +32,26 @@ router.get("/info", isAuthenticated, async (req, res) => {
   }
 });
 
+/**
+ * @desc  Update user profile pic
+ * @route PUT api/user/update-profile-pic
+ * @access Private
+ */
+
+router.put("/update-profile-pic", isAuthenticated, async (req, res) => {
+  try {
+    console.log(req.body.image);
+    const user = await User.findOneAndUpdate(
+      { _id: req.user.id },
+      { $set: { image: req.body.image } },
+      { new: true }
+    );
+
+    return res.status(200).json({ user });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json(error);
+  }
+});
+
 module.exports = router;

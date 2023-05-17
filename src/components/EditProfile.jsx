@@ -44,7 +44,7 @@ const EditProfile = () => {
 
   const currentUser = useSelector((state) => state.auth.currentUser);
 
-  const { name, email, profile } = currentUser;
+  const { name, email, profile, image } = currentUser;
   const {
     bio,
     company,
@@ -56,7 +56,6 @@ const EditProfile = () => {
     instagramlink,
     dateOfBirth,
     gender,
-    image,
   } = profile;
 
   const form = useForm({
@@ -72,7 +71,6 @@ const EditProfile = () => {
       instagramlink,
       dateOfBirth: new Date(dateOfBirth),
       gender,
-      image,
     },
   });
 
@@ -113,7 +111,21 @@ const EditProfile = () => {
 
     imageUpload(imageFile, async (url) => {
       dispatch(setProfileImage({ image: url }));
-      form.setFieldValue("image", url);
+
+      try {
+        const res = await axios.put(
+          "/api/user/update-profile-pic",
+          JSON.stringify({ image: url }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(res.data);
+      } catch (err) {
+        console.error(err);
+      }
     });
   };
 
