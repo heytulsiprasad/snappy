@@ -14,6 +14,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
 import EditProfile from "./components/EditProfile";
 import Posts from "./components/Posts";
+import Post from "./components/Post";
 
 // Styles
 import {
@@ -117,6 +118,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Posts />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/post/:postId"
+              element={
+                <ProtectedRoute>
+                  <Post />
                 </ProtectedRoute>
               }
             />

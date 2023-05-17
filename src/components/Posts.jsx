@@ -5,11 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPosts, updatePost } from "../features/posts/postSlice";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 function Posts() {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.post.posts);
   const currentUserId = useSelector((state) => state.auth.currentUser._id);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -51,6 +53,8 @@ function Posts() {
         {posts.map((post) => (
           <Group
             key={post._id}
+            id="post-container"
+            grow
             sx={{
               border: "1px solid #d5d5d5",
               padding: "1rem 2rem",
@@ -58,9 +62,15 @@ function Posts() {
               justifyContent: "space-between",
             }}
           >
-            <Group>
+            <Group
+              id="image-and-text-container"
+              grow
+              sx={{
+                maxWidth: "100%",
+              }}
+            >
               {post.image ? (
-                <Box>
+                <Box sx={{ maxWidth: "150px" }}>
                   <Image
                     src={post.image}
                     maw={150}
@@ -69,9 +79,9 @@ function Posts() {
                   />
                 </Box>
               ) : (
-                <Box w={150}></Box>
+                <Box maw={150}></Box>
               )}
-              <Group>
+              <Group sx={{ maxWidth: "100%" }}>
                 <Stack sx={{ justifyContent: "space-between" }}>
                   <Box>
                     <Text>{post.content}</Text>
@@ -95,13 +105,19 @@ function Posts() {
                 </Stack>
               </Group>
             </Group>
-            <Stack>
-              <Box
+            <Stack
+              id="like-and-comment-container"
+              sx={{
+                justifyContent: "space-between",
+                alignItems: "center",
+                maxWidth: "10rem",
+              }}
+            >
+              <Group
                 sx={{
-                  border: "2px solid #feb2b2",
+                  border: "2px solid #fb6e6e",
                   padding: "10px",
                   borderRadius: "10px",
-                  display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   cursor: "pointer",
@@ -113,14 +129,23 @@ function Posts() {
                 }
               >
                 {post.likes.includes(currentUserId) ? (
-                  <AiFillHeart size="20px" color="#feb2b2" />
+                  <AiFillHeart size="20px" color="#fb6e6e" />
                 ) : (
-                  <AiOutlineHeart size="20px" color="#feb2b2" />
+                  <AiOutlineHeart size="20px" color="#fb6e6e" />
                 )}
-              </Box>
+                <Box ml="-5px">
+                  <Text fz="md" fw="500" color="#fb6e6e">
+                    {post.likes.length}
+                  </Text>
+                </Box>
+              </Group>
               <Box>
-                <Button variant="light" compact>
-                  Comment
+                <Button
+                  variant="light"
+                  compact
+                  onClick={() => navigate(`/post/${post._id}`)}
+                >
+                  Comments ({post.comments.length})
                 </Button>
               </Box>
             </Stack>

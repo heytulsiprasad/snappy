@@ -120,7 +120,12 @@ router.post("/comment/:postId", isAuthenticated, async (req, res) => {
     post.comments.push(newComment);
     await post.save();
 
-    const newPost = await post.populate("author");
+    const newPost = await (
+      await post.populate("author")
+    ).populate({
+      path: "comments",
+      populate: { path: "author" },
+    });
 
     return res.status(200).json({ post: newPost });
   } catch (err) {
@@ -135,7 +140,7 @@ router.post("/comment/:postId", isAuthenticated, async (req, res) => {
  * @access  Private
  */
 
-router.post(
+router.delete(
   "/comment/:postId/:commentId",
   isAuthenticated,
   async (req, res) => {
@@ -161,7 +166,12 @@ router.post(
       post.comments.splice(index, 1);
       await post.save();
 
-      const newPost = await post.populate("author");
+      const newPost = await (
+        await post.populate("author")
+      ).populate({
+        path: "comments",
+        populate: { path: "author" },
+      });
 
       return res.status(200).json({ post: newPost });
     } catch (err) {
