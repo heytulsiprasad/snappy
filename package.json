@@ -6,7 +6,8 @@
   "scripts": {
     "build:client": "vite build",
     "build:server": "cd server && npm install",
-    "build:all": "concurrently \"npm run build:client\" \"npm run build:server\"",
+    "pre-build": "npm install",
+    "build": "concurrently \"npm run build:client\" \"npm run build:server\"",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "dev:server": "cd server && nodemon server.js",
