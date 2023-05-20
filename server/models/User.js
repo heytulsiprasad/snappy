@@ -26,6 +26,9 @@ UserSchema.set("toJSON", {
   },
 });
 
+// Add index to schema
+// UserSchema.index({ name: "text", email: "text" });
+
 const User = mongoose.model("user", UserSchema);
 
 module.exports = User;

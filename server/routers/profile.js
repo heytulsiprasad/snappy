@@ -130,31 +130,6 @@ router.post(
   }
 );
 
-/*
- * @desc  Search across all profiles
- * @route GET api/profile/search
- * @access Private
- * @query search
- */
-
-router.get("/search", isAuthenticated, async (req, res) => {
-  const { search } = req.query;
-
-  try {
-    const profiles = await Profile.find({
-      $or: [
-        { username: { $regex: search, $options: "i" } },
-        { bio: { $regex: search, $options: "i" } },
-      ],
-    });
-
-    return res.status(200).json({ profiles });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ msg: "Server Error" });
-  }
-});
-
 /**
  * @desc  Send friend request
  * @route PUT api/profile/friend-request/:id
