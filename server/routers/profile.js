@@ -239,4 +239,52 @@ router.put(
   }
 );
 
+/**
+ * @desc  Remove friend
+ * @route PUT api/profile/remove-friend/:userId
+ * @access Private
+ */
+
+router.put("/remove-friend/:userId", isAuthenticated, async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const profile = await Profile.findOne({ user: req.user.id });
+
+    // Remove as friend from current users profile
+    if (profile.friends.includes(userId)) {
+      profile.friendRequests = profile.friendRequests.filter(
+        (friend) => friend != userId
+      );
+
+      await profile.save();
+
+      // Remove as friend from friend's profile
+      const friendProfile = await Profile.findOne({ user: userId });
+
+      if (friendProfile.friends.includes(req.user.id)) {
+        friendProfile.friends = friendProfile.friends.filter(
+          (friend) => friend != req.user.id
+        );
+
+        await friendProfile.save();
+      }
+
+      const user = await User.findById(userId).select("-password");
+
+      const userData = {
+        ...user.toObject(),
+        profile: friendProfile,
+      };
+
+      return res.status(200).json({ user: userData });
+    } else {
+      return res.status(400).json({ msg: "No friend request found" });
+    }
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ msg: "Server Error" });
+  }
+});
+
 module.exports = router;

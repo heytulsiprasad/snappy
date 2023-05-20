@@ -62,6 +62,24 @@ const Profile = () => {
     }
   };
 
+  // Unfriend request
+  const handleUnfriendRequest = async (userId) => {
+    try {
+      const res = await axios.put(`/api/profile/remove-friend/${userId}`);
+      console.log(res.data);
+      setUser(res.data.user);
+
+      // Notify user upon success
+      notifications.show({
+        title: "Unfriended",
+        message: "You have unfriended this user",
+        color: "red",
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <Box sx={{ padding: "2rem" }}>
       {user && (
@@ -114,8 +132,9 @@ const Profile = () => {
                   Edit profile
                 </Button>
               )}
-              {/* If profile is not of current user and friend request not already sent */}
+              {/* If profile is not of current user and is not friend already and friend request not sent */}
               {user._id !== currentUserId &&
+                !user.profile.friends.includes(currentUserId) &&
                 !user.profile.friendRequests.includes(currentUserId) && (
                   <Button
                     variant="light"
@@ -129,7 +148,19 @@ const Profile = () => {
               {/* If profile is not of current user and friend request is sent */}
               {user._id !== currentUserId &&
                 user.profile.friendRequests.includes(currentUserId) && (
-                  <Button variant="light" color="white" compact>
+                  <Button
+                    variant="light"
+                    color="white"
+                    compact
+                    onClick={() => {
+                      notifications.show({
+                        title: "Friend request already sent",
+                        message:
+                          "You have already sent a friend request to this user",
+                        color: "cyan",
+                      });
+                    }}
+                  >
                     Friend Request Sent
                   </Button>
                 )}
@@ -137,7 +168,12 @@ const Profile = () => {
               {/* If profile is not of current user & If profile is already a friend of current user */}
               {user._id !== currentUserId &&
                 user.profile.friends.includes(currentUserId) && (
-                  <Button variant="light" color="red" compact>
+                  <Button
+                    variant="light"
+                    color="red"
+                    compact
+                    onClick={() => handleUnfriendRequest(userId)}
+                  >
                     Unfriend
                   </Button>
                 )}
