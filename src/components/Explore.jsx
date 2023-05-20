@@ -36,11 +36,13 @@ const Explore = () => {
   const handleSearch = async (e) => {
     // Search via API
     try {
-      const res = await axios.get(
-        `/api/user/search?search=${encodeURIComponent(search)}`
-      );
-      console.log(res.data);
-      setResults(res.data);
+      if (search) {
+        const res = await axios.get(
+          `/api/user/search?search=${encodeURIComponent(search)}`
+        );
+        console.log(res.data);
+        setResults(res.data);
+      }
     } catch (error) {
       console.error(error);
     }
