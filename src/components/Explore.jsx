@@ -8,14 +8,13 @@ import {
   Title,
   Image,
 } from "@mantine/core";
-import { useInputState } from "@mantine/hooks";
 import axios from "axios";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Explore = () => {
-  const [search, setSearch] = useInputState("");
+  const [search, setSearch] = useState("");
   const [results, setResults] = useState({});
 
   useEffect(() => {
@@ -57,7 +56,11 @@ const Explore = () => {
     <Box sx={{ padding: "2rem" }}>
       <Title order={2}>Explore</Title>
       <Group grow mt="xl">
-        <TextInput placeholder="Search" value={search} onChange={setSearch} />
+        <TextInput
+          placeholder="Search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
         <Group>
           <Button maw="10rem" variant="outline" onClick={handleSearch}>
             Search
