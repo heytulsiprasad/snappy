@@ -117,7 +117,7 @@ const Profile = () => {
                 pr={3}
                 rightSection={() => <Text>12</Text>}
               >
-                Friends: {user.profile.friends.length}
+                Friends: {user?.profile?.friends.length}
               </Badge>
             </Group>
             <Group>
@@ -134,8 +134,8 @@ const Profile = () => {
               )}
               {/* If profile is not of current user and is not friend already and friend request not sent */}
               {user._id !== currentUserId &&
-                !user.profile.friends.includes(currentUserId) &&
-                !user.profile.friendRequests.includes(currentUserId) && (
+                !user?.profile?.friends.includes(currentUserId) &&
+                !user?.profile?.friendRequests.includes(currentUserId) && (
                   <Button
                     variant="light"
                     color="white"
@@ -147,7 +147,7 @@ const Profile = () => {
                 )}
               {/* If profile is not of current user and friend request is sent */}
               {user._id !== currentUserId &&
-                user.profile.friendRequests.includes(currentUserId) && (
+                user?.profile?.friendRequests.includes(currentUserId) && (
                   <Button
                     variant="light"
                     color="white"
@@ -167,7 +167,7 @@ const Profile = () => {
 
               {/* If profile is not of current user & If profile is already a friend of current user */}
               {user._id !== currentUserId &&
-                user.profile.friends.includes(currentUserId) && (
+                user?.profile?.friends.includes(currentUserId) && (
                   <Button
                     variant="light"
                     color="red"
