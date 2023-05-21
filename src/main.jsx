@@ -7,7 +7,10 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store.js";
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:5000";
+// 😑: Never do this, use dynamic baseURL
+axios.defaults.baseURL = import.meta.env.PROD
+  ? "https://snappy-web.onrender.com"
+  : "http://localhost:5000";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
