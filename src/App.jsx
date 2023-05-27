@@ -74,7 +74,7 @@ function App() {
     <MantineProvider
       withGlobalStyles
       theme={{
-        fontFamily: "Montserrat, sans-serif",
+        fontFamily: "Poppins, sans-serif",
       }}
     >
       <Notifications />
