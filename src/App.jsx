@@ -5,19 +5,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
 // Components
-import New from "./components/New";
+import New from "./pages/New";
 import Footer from "./components/Footer";
 import ProfileTag from "./components/ProfileTag";
-import Login from "./components/Login";
-import Register from "./components/Register";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
-import EditProfile from "./components/EditProfile";
-import Posts from "./components/Posts";
-import Post from "./components/Post";
-import Profile from "./components/Profile";
-import Explore from "./components/Explore";
-import FriendRequests from "./components/FriendRequests";
+import EditProfile from "./pages/EditProfile";
+import Posts from "./pages/Posts";
+import Post from "./pages/Post";
+import Profile from "./pages/Profile";
+import Explore from "./pages/Explore";
+import FriendRequests from "./pages/FriendRequests";
 
 // Styles
 import {
