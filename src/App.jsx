@@ -7,7 +7,6 @@ import { useEffect } from "react";
 // Components
 import New from "./pages/New";
 import Footer from "./components/Footer";
-import ProfileTag from "./components/ProfileTag";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -18,17 +17,10 @@ import Post from "./pages/Post";
 import Profile from "./pages/Profile";
 import Explore from "./pages/Explore";
 import FriendRequests from "./pages/FriendRequests";
+import Navbar from "./components/Navbar";
 
 // Styles
-import {
-  Wrapper,
-  Navbar,
-  NavHead,
-  NavItem,
-  ImageBox,
-  ContentWrapper,
-  NavItemsBox,
-} from "./styles/App.styles";
+import { Wrapper, ContentWrapper } from "./styles/App.styles";
 
 // Assets
 import logo from "./assets/instagram.svg";
@@ -40,7 +32,6 @@ import axios from "axios";
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const currentUser = useSelector((state) => state.auth.currentUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -72,52 +63,13 @@ function App() {
 
   return (
     <MantineProvider
-      withGlobalStyles
       theme={{
         fontFamily: "Poppins, sans-serif",
       }}
     >
       <Notifications />
       <Wrapper>
-        <Navbar>
-          <ul>
-            <div>
-              <li>
-                <NavHead to="/">
-                  <ImageBox>
-                    <img src={logo} alt="logo" />
-                  </ImageBox>
-                  <Text fz="xl" fw="600" ml="xs">
-                    Snappy
-                  </Text>
-                </NavHead>
-              </li>
-            </div>
-            <NavItemsBox>
-              <li>
-                <NavItem to="/new">New</NavItem>
-              </li>
-              <li>
-                <NavItem to="/">Posts</NavItem>
-              </li>
-              <li>
-                <NavItem to="/explore">Explore</NavItem>
-              </li>
-              <li>
-                {!isAuthenticated ? (
-                  <NavItem to="/login">Login</NavItem>
-                ) : (
-                  <ProfileTag
-                    name={currentUser?.name}
-                    email={currentUser?.email}
-                    userId={currentUser?._id}
-                    profileImg={currentUser?.image}
-                  />
-                )}
-              </li>
-            </NavItemsBox>
-          </ul>
-        </Navbar>
+        <Navbar />
         <ContentWrapper>
           <Routes>
             <Route
