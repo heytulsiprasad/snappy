@@ -2,11 +2,11 @@ import { configureStore } from "@reduxjs/toolkit";
 
 // Features
 import authReducer from "../features/auth/authSlice";
-import postReducer from "../features/posts/postSlice";
+import postReducer from "../features/tweets/tweetSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    post: postReducer,
+    tweets: postReducer,
   },
 });

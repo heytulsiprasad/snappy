@@ -13,7 +13,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
 import EditProfile from "./pages/EditProfile";
 // import Posts from "./pages/Posts";
-import Post from "./pages/Post";
+// import Post from "./pages/Post";
 import Profile from "./pages/Profile";
 import Explore from "./pages/Explore";
 import FriendRequests from "./pages/FriendRequests";
@@ -81,14 +81,14 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route
+            {/* <Route
               path="/post/:postId"
               element={
                 <ProtectedRoute>
                   <Post />
                 </ProtectedRoute>
               }
-            />
+            /> */}
             <Route
               path="/profile/:userId"
               element={
