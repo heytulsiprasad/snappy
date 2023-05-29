@@ -47,13 +47,12 @@ const NavProfile = styled.div`
   cursor: pointer;
 
   .image-container {
-    width: 2rem;
-
     img {
       display: block;
-      max-width: 100%;
-      max-height: 100%;
       border-radius: 5px;
+      width: 2rem;
+      height: 2rem;
+      object-fit: cover;
     }
   }
 

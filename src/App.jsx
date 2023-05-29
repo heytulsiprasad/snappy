@@ -12,12 +12,13 @@ import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
 import EditProfile from "./pages/EditProfile";
-import Posts from "./pages/Posts";
+// import Posts from "./pages/Posts";
 import Post from "./pages/Post";
 import Profile from "./pages/Profile";
 import Explore from "./pages/Explore";
 import FriendRequests from "./pages/FriendRequests";
 import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
 
 // Styles
 import { Wrapper, ContentWrapper } from "./styles/App.styles";
@@ -76,7 +77,7 @@ function App() {
               path="/"
               element={
                 <ProtectedRoute>
-                  <Posts />
+                  <Home />
                 </ProtectedRoute>
               }
             />
