@@ -28,7 +28,7 @@ if (process.env.NODE_ENV !== "production") {
 const authRoutes = require("./routers/auth");
 const userRoutes = require("./routers/user");
 const profileRoutes = require("./routers/profile");
-const postRoutes = require("./routers/post");
+const tweetRoutes = require("./routers/tweets");
 
 // // Storage
 // const Storage = multer.diskStorage({
@@ -65,7 +65,7 @@ mongoose
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/profile", profileRoutes);
-app.use("/api/posts", postRoutes);
+app.use("/api/tweets", tweetRoutes);
 
 // Serve static assets in production
 if (process.env.NODE_ENV === "production") {

@@ -1,37 +1,25 @@
-import { MantineProvider, Text } from "@mantine/core";
+import { MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
 // Components
-import New from "./components/New";
+import New from "./pages/New";
 import Footer from "./components/Footer";
-import ProfileTag from "./components/ProfileTag";
-import Login from "./components/Login";
-import Register from "./components/Register";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
-import EditProfile from "./components/EditProfile";
-import Posts from "./components/Posts";
-import Post from "./components/Post";
-import Profile from "./components/Profile";
-import Explore from "./components/Explore";
-import FriendRequests from "./components/FriendRequests";
+import EditProfile from "./pages/EditProfile";
+import Profile from "./pages/Profile";
+import Explore from "./pages/Explore";
+import FriendRequests from "./pages/FriendRequests";
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
 
 // Styles
-import {
-  Wrapper,
-  Navbar,
-  NavHead,
-  NavItem,
-  ImageBox,
-  ContentWrapper,
-  NavItemsBox,
-} from "./styles/App.styles";
-
-// Assets
-import logo from "./assets/instagram.svg";
+import { Wrapper, ContentWrapper } from "./styles/App.styles";
 
 // Utils & Reducers
 import { login } from "./features/auth/authSlice";
@@ -40,7 +28,6 @@ import axios from "axios";
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const currentUser = useSelector((state) => state.auth.currentUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -72,67 +59,20 @@ function App() {
 
   return (
     <MantineProvider
-      withGlobalStyles
       theme={{
-        fontFamily: "Montserrat, sans-serif",
+        fontFamily: "Poppins, sans-serif",
       }}
     >
       <Notifications />
       <Wrapper>
-        <Navbar>
-          <ul>
-            <div>
-              <li>
-                <NavHead to="/">
-                  <ImageBox>
-                    <img src={logo} alt="logo" />
-                  </ImageBox>
-                  <Text fz="xl" fw="600" ml="xs">
-                    Snappy
-                  </Text>
-                </NavHead>
-              </li>
-            </div>
-            <NavItemsBox>
-              <li>
-                <NavItem to="/new">New</NavItem>
-              </li>
-              <li>
-                <NavItem to="/">Posts</NavItem>
-              </li>
-              <li>
-                <NavItem to="/explore">Explore</NavItem>
-              </li>
-              <li>
-                {!isAuthenticated ? (
-                  <NavItem to="/login">Login</NavItem>
-                ) : (
-                  <ProfileTag
-                    name={currentUser?.name}
-                    email={currentUser?.email}
-                    userId={currentUser?._id}
-                    profileImg={currentUser?.image}
-                  />
-                )}
-              </li>
-            </NavItemsBox>
-          </ul>
-        </Navbar>
+        <Navbar />
         <ContentWrapper>
           <Routes>
             <Route
               path="/"
               element={
                 <ProtectedRoute>
-                  <Posts />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/post/:postId"
-              element={
-                <ProtectedRoute>
-                  <Post />
+                  <Home />
                 </ProtectedRoute>
               }
             />

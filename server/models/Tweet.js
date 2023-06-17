@@ -14,7 +14,7 @@ const CommentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const PostSchema = new mongoose.Schema(
+const TweetSchema = new mongoose.Schema(
   {
     content: {
       type: String,
@@ -37,6 +37,6 @@ const PostSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Post = mongoose.model("post", PostSchema);
+const Post = mongoose.model("post", TweetSchema);
 
 module.exports = Post;
