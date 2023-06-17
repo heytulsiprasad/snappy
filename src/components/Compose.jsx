@@ -108,7 +108,7 @@ const Textarea = styled.textarea`
 
 const Compose = () => {
   const currentUser = useSelector((state) => state.auth.currentUser);
-  const [tweet, setTweet] = useState("");
+  const [value, setValue] = useState("");
 
   return (
     <Wrapper>
@@ -122,8 +122,8 @@ const Compose = () => {
           </div>
           <Textarea
             placeholder="What's happening?"
-            value={tweet}
-            onChange={(e) => setTweet(e.target.value)}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
           />
         </TweetBody>
       </TweetContent>

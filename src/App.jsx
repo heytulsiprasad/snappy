@@ -1,4 +1,4 @@
-import { MantineProvider, Text } from "@mantine/core";
+import { MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,8 +12,6 @@ import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
 import EditProfile from "./pages/EditProfile";
-// import Posts from "./pages/Posts";
-// import Post from "./pages/Post";
 import Profile from "./pages/Profile";
 import Explore from "./pages/Explore";
 import FriendRequests from "./pages/FriendRequests";
@@ -22,9 +20,6 @@ import Home from "./pages/Home";
 
 // Styles
 import { Wrapper, ContentWrapper } from "./styles/App.styles";
-
-// Assets
-import logo from "./assets/instagram.svg";
 
 // Utils & Reducers
 import { login } from "./features/auth/authSlice";
@@ -81,14 +76,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            {/* <Route
-              path="/post/:postId"
-              element={
-                <ProtectedRoute>
-                  <Post />
-                </ProtectedRoute>
-              }
-            /> */}
             <Route
               path="/profile/:userId"
               element={

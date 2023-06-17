@@ -1,24 +1,31 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = [];
+const initialState = {
+  allTweets: [],
+  totalTweets: 0,
+};
 
 const tweetSlice = createSlice({
   name: "tweets",
   initialState,
   reducers: {
     setTweets: (state, action) => {
-      state = action.payload;
+      state.allTweets = action.payload;
+      state.totalTweets = action.payload.length;
     },
     addTweet: (state, action) => {
-      state.push(action.payload);
+      state.allTweets.push(action.payload);
     },
     removeTweet: (state, action) => {
-      state = state.filter((post) => post._id !== action.payload);
+      state.allTweets = state.allTweets.filter(
+        (tweet) => tweet._id !== action.payload
+      );
     },
     updateTweet: (state, action) => {
-      const index = state.findIndex((post) => post._id === action.payload._id);
-
-      state[index] = action.payload;
+      const index = state.allTweets.findIndex(
+        (tweet) => tweet._id === action.payload._id
+      );
+      state.allTweets[index] = action.payload;
     },
   },
 });

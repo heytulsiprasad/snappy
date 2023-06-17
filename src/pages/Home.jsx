@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Compose from "../components/Compose";
-import AllPosts from "../components/AllPosts";
+import Tweets from "../components/Tweets";
 
 const Wrapper = styled.main`
   padding: 1.25rem 4rem;
@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <Wrapper>
       <Compose />
-      <AllPosts />
+      <Tweets />
     </Wrapper>
   );
 };
